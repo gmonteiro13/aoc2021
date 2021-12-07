@@ -7,7 +7,6 @@
 # position  of all numbers in the diagnostic report.
 
 from collections import Counter
-from types import new_class
 
 with open('inputDay3.txt', 'r') as f:
     binaryNumbers = f.read().splitlines()
@@ -45,8 +44,8 @@ for binaryList in binaryTotalList:
     else:
         epsilonRateList.append(1)
 
-gammaRate = int(''.join(str(bit) for bit in gammaRateList), 2)
-epsilonRate = int(''.join(str(bit) for bit in epsilonRateList), 2)
+# gammaRate = int(''.join(str(bit) for bit in gammaRateList), 2)
+# epsilonRate = int(''.join(str(bit) for bit in epsilonRateList), 2)
 # print(f'The gamma rate list is: {gammaRateList}')
 # print(f'The epsilon rate list is: {epsilonRateList}')
 # print(f'Gamma Rate is: {gammaRate}')
@@ -61,18 +60,34 @@ epsilonRate = int(''.join(str(bit) for bit in epsilonRateList), 2)
 # To find the CSR, we need to determine the least common value in the current bit position...
 # and keep only numbers with that bit in that position. If there is a tie, the CSR is 0.
 
+allOGR = []
 OGRList = binaryNumbers
 CSRList = binaryNumbers
 i = 0
-
-while i < 12:
-    print('Im in the loop')
-    mostCommonBit = int(getMostCommonBit(binaryTotalList[i]))
-    for list in OGRList[:]:
-        if mostCommonBit != int(list[i]):
-            OGRList.remove(list)
-    print('out of the loop')
-    print(f'The OGRList is: {OGRList}')
+while (len(OGRList) > 0):
+    mostCommonBit = getMostCommonBit(binaryTotalList[i])
+    print(dict(Counter(binaryTotalList[i])))
+    OGRListCopy = [x for x in OGRList if x[i] == mostCommonBit]
+    OGRList = OGRListCopy
+    if len(OGRListCopy) == 1:
+        break
     i += 1
 
-print(OGRList)
+i = 0
+
+while (len(CSRList) > 0):
+    mostCommonBit = getMostCommonBit(binaryTotalList[i])
+    print(dict(Counter(binaryTotalList[i])))
+    CSRListCopy = [x for x in CSRList if x[i] != mostCommonBit]
+    CSRList = CSRListCopy
+    if len(CSRListCopy) == 1:
+        break
+    i += 1
+
+csr = int(''.join(str(bit) for bit in CSRList), 2)
+ogr = int(''.join(str(bit) for bit in OGRList), 2)
+print(f'The CSR list is: {CSRList}')
+print(f'The ogr list is: {OGRList}')
+print(f'CSR is: {csr}')
+print(f'ogr is: {ogr}')
+print(f'Life support rating is: {csr * ogr}')
