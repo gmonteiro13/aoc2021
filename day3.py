@@ -60,13 +60,47 @@ for binaryList in binaryTotalList:
 # To find the CSR, we need to determine the least common value in the current bit position...
 # and keep only numbers with that bit in that position. If there is a tie, the CSR is 0.
 
-allOGR = []
 OGRList = binaryNumbers
+OGRBitList = []
+CSRBitList = []
+OGRTotalList = []
+CSRTotalList = []
 CSRList = binaryNumbers
 i = 0
+def iterateThruOGRBinaryList(i):
+    for OGRNumber in OGRList:
+        OGRBitList.append(getBit(OGRNumber, i))
+    return OGRBitList
+
+def iterateThruCSRBinaryList(i):
+    for CSRNumber in CSRList:
+        CSRBitList.append(getBit(CSRNumber, i))
+    return CSRBitList
+# def constructOGRBinaryTotalList(OGRList):
+#     i = 0
+#     while i < len(OGRList[i]):
+#         OGRBitList = [iterateThruOGRBinaryList(i)]
+#         allOGRBitList.extend(OGRBitList)
+#         OGRBitList.clear()
+#         i += 1
+#     return allOGRBitList
+
 while (len(OGRList) > 0):
-    mostCommonBit = getMostCommonBit(binaryTotalList[i])
-    print(dict(Counter(binaryTotalList[i])))
+    j = 0
+    print(OGRList)
+    while j < len(OGRList[j]):
+        for OGRNumber in OGRList:
+            OGRBitList.append(getBit(OGRNumber, j))
+        # print(f'Printing the {i} OGR list: \t {OGRBitList}')
+        OGRTotalList.extend(OGRBitList)
+        # print(f'Printing the {i} OGR total list: \t {OGRTotalList[i]}')
+        OGRBitList.clear()
+        j += 1
+        if j >= len(OGRList):
+            break
+    mostCommonBit = getMostCommonBit(OGRTotalList[i])
+    OGRTotalList.clear
+    print(dict(Counter(OGRTotalList[i])))
     OGRListCopy = [x for x in OGRList if x[i] == mostCommonBit]
     OGRList = OGRListCopy
     if len(OGRListCopy) == 1:
@@ -76,14 +110,29 @@ while (len(OGRList) > 0):
 i = 0
 
 while (len(CSRList) > 0):
-    mostCommonBit = getMostCommonBit(binaryTotalList[i])
-    print(dict(Counter(binaryTotalList[i])))
+    j = 0
+    print(CSRList)
+    while j < len(CSRList[j]):
+        for CSRNumber in CSRList:
+            CSRBitList.append(getBit(CSRNumber, i))
+        # print(f'Printing the {i} OGR list: \t {OGRBitList}')
+        CSRTotalList.extend(CSRBitList)
+        # print(f'Printing the {i} OGR total list: \t {OGRTotalList[i]}')
+        CSRBitList.clear()
+        j += 1
+        if j >= len(CSRList):
+            break
+    mostCommonBit = getMostCommonBit(CSRTotalList[i])
+    CSRTotalList.clear
+    print(dict(Counter(CSRTotalList[i])))
     CSRListCopy = [x for x in CSRList if x[i] != mostCommonBit]
     CSRList = CSRListCopy
     if len(CSRListCopy) == 1:
         break
     i += 1
 
+print(OGRList)
+print(CSRList)
 csr = int(''.join(str(bit) for bit in CSRList), 2)
 ogr = int(''.join(str(bit) for bit in OGRList), 2)
 print(f'The CSR list is: {CSRList}')
